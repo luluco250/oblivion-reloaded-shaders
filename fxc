@@ -1,0 +1,10 @@
+#!/bin/sh
+
+dir=$(dirname "$0")
+dir=$(realpath $dir)
+
+WINEPREFIX="$dir/.prefix" \
+WINEARCH=win64 \
+WINEDLLOVERRIDES='D3DCompiler_47=n' \
+WINEDEBUG=-all \
+wine "$dir/fxc.exe" /nologo $@
