@@ -38,8 +38,10 @@ float4 main(float2 uv: TEXCOORD1, float2 bloom_uv: TEXCOORD0): COLOR0 {
     bloom_uv.y *= res.y / res.x;
 
     float4 bloom = tex2D(ScreenSpace, bloom_uv);
-
-    color = lerp(color, bloom, TESR_ToneMapping.y);
+    color = (
+        lerp(color, bloom, TESR_ToneMapping.y) +
+        max(color, bloom * TESR_ToneMapping.y)
+    ) * 0.5;
 
     float adapt = to_luma(tex2D(AvgLum, uv).rgb);
     color /= clamp(adapt * TESR_ToneMapping.x, 0.5, 2.0);
